@@ -20,6 +20,7 @@ import static android.content.ContentValues.TAG;
  * 作用：用户中心的Fragment
  */
 public class UserFragment extends BaseFragment implements View.OnClickListener {
+    private static final String TAG = "UserFragment";
 
     public static final String USER_LOGIN = "user_login";
 
@@ -27,6 +28,7 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
 
     View unLoginLayout;
     View loginLayout;
+    TextView name;
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -50,8 +52,6 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         Log.e(TAG, "用户中心的Fragment的UI被初始化了");
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personal_center, null, false);
 
-        boolean hasLogin = CacheUtils.getBoolean(getContext(), USER_LOGIN);
-
         unLoginLayout = view.findViewById(R.id.un_login_layout);
         loginLayout = view.findViewById(R.id.login_layout);
         TextView login = view.findViewById(R.id.login);
@@ -62,10 +62,17 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         register.setOnClickListener(this);
         logout.setOnClickListener(this);
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        boolean hasLogin = CacheUtils.getBoolean(getContext(), USER_LOGIN);
         name.setText(CacheUtils.getString(mContext, LoginFragment.KEY_LOGIN_USER_NAME));
 
         showLogin(hasLogin);
-        return view;
     }
 
     private void showLogin(boolean hasLogin) {

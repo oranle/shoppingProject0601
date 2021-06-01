@@ -30,6 +30,7 @@ import static android.content.ContentValues.TAG;
  * 作用：用户中心的Fragment
  */
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
+    private static final String TAG = "LoginFragment";
     public static final String KEY_LOGIN_USER_NAME = "login_user_name";
     private TextView inputName;
     private TextView password;
