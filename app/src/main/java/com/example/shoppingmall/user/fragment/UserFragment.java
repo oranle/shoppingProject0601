@@ -21,9 +21,29 @@ import static android.content.ContentValues.TAG;
  */
 public class UserFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String USER_LOGIN = "user_login";
+    public static final String USER_LOGIN = "user_login";
 
     private TextView textView;
+
+    View unLoginLayout;
+    View loginLayout;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.w(TAG, "onHiddenChanged: " + hidden);
+        if (hidden) {
+
+        } else {
+            initView();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.w(TAG, "onPause: ");
+    }
 
     @Override
     public View initView() {
@@ -32,15 +52,23 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
 
         boolean hasLogin = CacheUtils.getBoolean(getContext(), USER_LOGIN);
 
-        View unLoginLayout = view.findViewById(R.id.un_login_layout);
-        View loginLayout = view.findViewById(R.id.login_layout);
+        unLoginLayout = view.findViewById(R.id.un_login_layout);
+        loginLayout = view.findViewById(R.id.login_layout);
         TextView login = view.findViewById(R.id.login);
         TextView register = view.findViewById(R.id.register);
         TextView logout = view.findViewById(R.id.logout);
+        TextView name = view.findViewById(R.id.name);
         login.setOnClickListener(this);
         register.setOnClickListener(this);
         logout.setOnClickListener(this);
 
+        name.setText(CacheUtils.getString(mContext, LoginFragment.KEY_LOGIN_USER_NAME));
+
+        showLogin(hasLogin);
+        return view;
+    }
+
+    private void showLogin(boolean hasLogin) {
         if (hasLogin) {
             unLoginLayout.setVisibility(View.GONE);
             loginLayout.setVisibility(View.VISIBLE);
@@ -48,14 +76,11 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
             unLoginLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
         }
-        return view;
     }
 
     @Override
     public void initData() {
         super.initData();
-        Log.e(TAG, "用户中心的Fragment的数据被初始化了");
-        textView.setText("用户中心内容");
     }
 
     @Override
@@ -65,7 +90,8 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         } else if (view.getId() == R.id.register) {
             FragmentDisplayActivity.start(getContext(), RegisterFragment.class);
         } else if (view.getId() == R.id.logout) {
-            getActivity().onBackPressed();
+            CacheUtils.saveBoolean(getContext(), UserFragment.USER_LOGIN, false);
+            showLogin(false);
         }
     }
 }

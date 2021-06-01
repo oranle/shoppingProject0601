@@ -18,7 +18,7 @@ public abstract class AppDataBase extends RoomDatabase {
 
     private static volatile AppDataBase mInstance = null;
 
-    private AppDataBase() {
+    public AppDataBase() {
     }
 
     public static AppDataBase get() {

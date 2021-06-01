@@ -26,24 +26,7 @@ public class UpdateInfoFragment extends BaseFragment {
         Log.e(TAG, "用户中心的Fragment的UI被初始化了");
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personal_center, null, false);
 
-        boolean hasLogin = CacheUtils.getBoolean(getContext(), USER_LOGIN);
 
-        View unLoginLayout = view.findViewById(R.id.un_login_layout);
-        View loginLayout = view.findViewById(R.id.login_layout);
-        TextView login = view.findViewById(R.id.login);
-        TextView register = view.findViewById(R.id.register);
-        TextView logout = view.findViewById(R.id.logout);
-        login.setOnClickListener(this);
-        register.setOnClickListener(this);
-        logout.setOnClickListener(this);
-
-        if (hasLogin) {
-            unLoginLayout.setVisibility(View.GONE);
-            loginLayout.setVisibility(View.VISIBLE);
-        } else {
-            unLoginLayout.setVisibility(View.VISIBLE);
-            loginLayout.setVisibility(View.GONE);
-        }
         return view;
     }
 

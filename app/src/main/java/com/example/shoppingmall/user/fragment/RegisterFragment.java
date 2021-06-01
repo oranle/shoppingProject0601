@@ -52,7 +52,6 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     public void initData() {
         super.initData();
         Log.e(TAG, "用户中心的Fragment的数据被初始化了");
-        textView.setText("用户中心内容");
     }
 
     @Override
@@ -81,12 +80,19 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
                     UserDao userDao = AppDataBase.get().getUserDao();
                     List<User> userByName = userDao.getUserByName(name);
                     if (userByName.size() > 0) {
-
+                        Message message = mHandler.obtainMessage(CODE_MSG);
+                        message.obj = "用户已存在";
+                        message.sendToTarget();
                     } else {
+                        userDao.insert(user);
+                        Message message = mHandler.obtainMessage(CODE_MSG);
+                        message.obj = "已注册";
+                        message.sendToTarget();
 
+                        Message successMSG = mHandler.obtainMessage(CODE_SUCCESS);
+                        successMSG.sendToTarget();
                     }
 
-                    userDao.insert(user);
                 }
             }.start();
         }
